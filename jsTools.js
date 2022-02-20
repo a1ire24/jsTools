@@ -11,3 +11,8 @@ const fetchApi = function(url, data, method="POST"){
         };
     })
 };
+
+const formToJson = function (formId){
+    const data = new FormData(document.getElementById(formId)); 
+    return Object.fromEntries(data.entries());
+}
