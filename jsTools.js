@@ -5,9 +5,25 @@ const fetchApi = function (url, data, method="POST"){
         xhttp.open(method, url, true);
         xhttp.setRequestHeader('Content-Type', 'application/json');
         xhttp.send(JSON.stringify(data));
-        xhttp.onload = function() {
-            const result = JSON.parse(xhttp.responseText);
-            resolve(result);
+        xhttp.onload = function (){
+            if (xhttp.status >= 200 && xhttp.status < 300) {
+                try {
+                    resolve(JSON.parse(xhttp.responseText));
+                } catch (error) {
+                    resolve(xhttp.responseText);
+                }
+            } else {
+                reject({
+                    status: xhttp.status,
+                    statusText: xhttp.statusText
+                });
+            }
+        };
+        xhttp.onerror = function () {
+            reject({
+                status: xhttp.status,
+                statusText: xhttp.statusText
+            });
         };
     })
 };
