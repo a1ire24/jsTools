@@ -36,7 +36,11 @@ const formToJson = function (formId){
 const jsonToForm = function (formId, data){
     for ( let key in data ) {
         try {
-            document.forms[formId].elements[key].value = data[key];
+            const inputElement = document.forms[formId].elements[key];
+            if(inputElement.type === 'checkbox')
+                inputElement.checked = !!Number(data[key]);
+            else
+                inputElement.value = data[key];
         } catch (error) {
             // console.log(error);
         }
